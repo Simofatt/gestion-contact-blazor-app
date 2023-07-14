@@ -1,0 +1,21 @@
+﻿
+
+@if(isInvisible) {
+    <div class="alert alert-success">
+        <span>@ChildContent have been inserted !</span>
+        <a style="cursor:pointer;" @onclick="(() => CloseValidation())">X</a>
+    </div>
+}
+
+
+@code {
+    [Parameter]
+    public bool isInvisible { get; set; }
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    public void CloseValidation()
+    {
+        isInvisible = false;
+    }
+} 

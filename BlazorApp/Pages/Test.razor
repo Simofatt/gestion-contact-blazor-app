@@ -1,0 +1,138 @@
+﻿@page "/Test"
+@using BlazorApp.Data
+@inject IAuthorService authorService
+@inject NavigationManager NavigationManager
+
+
+
+
+<input type="number" @bind="timeInput"/>
+<button  @onclick ="time" >Enter a time </button>
+<br/>
+<p> hello world ! its @currentTime P.M</p>
+<br/>
+
+<div class="col-12">        
+    <h3><b>Enter Author Information</b></h3>
+    <hr />
+
+ <MessageValidation isInvisible="isInvisible"> <span>Author :</span>@FullName </MessageValidation>
+
+ <EditForm Model="@author" OnValidSubmit="@SaveAuthor">
+        <DataAnnotationsValidator/>
+        @*<ValidationSummary/>*@
+        <div class="col-12 row">
+            <label class="col-2 font-weight-bold">first name :</label>
+            <input class="form-control col-3" @bind-value="author.FirstName" placeholder="first name" /> 
+           &nbsp; <ValidationMessage For = "@(() =>author.FirstName)"/>
+        </div>
+        
+        <div class="col-12 row">
+            <label class="col-2 font-weight-bold">last name :</label>
+            <InputText class="form-control col-3" @bind-Value="author.LastName" placeholder="last name" />
+            &nbsp;<ValidationMessage For="@(() =>author.LastName)" />
+           
+        </div>
+        
+        <div class="col-12 row">
+            <label class="col-2 font-weight-bold">city :</label>
+            <InputText class="form-control col-3" @bind-Value="author.City" placeholder="Citys" />
+            &nbsp;<ValidationMessage For="@(() =>author.City)" />
+            
+        </div>
+        
+        <div class="col-12 row">
+            <label class="col-2 font-weight-bold">email address :</label>
+            <InputText class="form-control col-3" @bind-Value="author.EmailAddress" placeholder="email address" />
+            &nbsp;<ValidationMessage For="@(() =>author.EmailAddress)" />
+        </div>
+        <div class="col-12 row">
+            <label class="col-2 font-weight-bold">email address :</label>
+            <InputNumber class="form-control col-3" @bind-Value="author.Salary" placeholder="Salary" />
+            &nbsp;<ValidationMessage For="@(() =>author.Salary)" />
+
+        </div>
+        
+        <div class="col-12 row">
+            <span class="col-2"></span>
+            <input type="submit" class="form-control col-1 btn btn-primary" value="Save" />
+            <span>&nbsp;</span>
+            @*<input type="submit" class="form-control col-1 btn btn-primary" value="Clear" /> *@
+        </div>
+    </EditForm>
+</div>
+<br />
+
+
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>First Name</th>
+                
+                <th>Details</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(Author item in authors)
+            {
+                <tr>
+                    <td>@item.AuthorId</td>
+                    <td>@item.FirstName</td>
+                    
+
+                    @*<td><NavLink href="@string.Format("/author/detail/{0}",@item.AuthorId)">Details</NavLink></td>*@
+                    <td><button class="btn btn-primary" @onclick="()=>detail(item.AuthorId)">Detail</button></td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@code {
+
+    public Author? author { get; set; }
+    private int timeInput;
+    private int currentTime;
+    public  IList<Author>? authors{ get; set; }   
+    public bool isInvisible { get; set; }
+    public string? FullName { get; set; }
+    
+
+    public void time()
+    {
+        currentTime = timeInput;
+    }
+    public void detail(int AuthorId)
+    {
+        NavigationManager.NavigateTo("/author/detail/"+AuthorId);
+    }
+
+    protected override void OnInitialized() {
+        author = new Author();
+
+        authorService.Seed();
+        authors =  authorService.GetAuthors();
+    }
+
+    public void SaveAuthor()
+    {
+        var FirstName = author.FirstName;
+        var LastName  = author.LastName;
+         FullName  = FirstName +" "+LastName; 
+        authorService.SaveAuthor(author);
+        isInvisible = true;
+     
+    }
+
+}
+
+
+
+
+
+
+

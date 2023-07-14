@@ -1,0 +1,48 @@
+﻿@page "/author/detail/{AuthorId:int}"
+@using BlazorApp.Data
+@inject IAuthorService authorService
+
+
+
+<h3>Author Details</h3>
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email </th>
+                
+                <th>City</th>
+                <th>Salary</th>
+            </tr>
+        </thead>
+        <tbody>
+                <tr>
+                    <td>@item.FirstName</td>
+                    <td>@item.LastName</td>
+                    <td>@item.EmailAddress</td>
+                   
+                    <td>@item.City</td>
+                    <td>@item.Salary</td>
+                </tr>
+        </tbody>
+    </table>
+</div>
+
+
+
+@code {
+    [Parameter]
+    public int AuthorId { get; set; }
+    public Author? item { get; set; }
+
+
+
+    protected override void OnInitialized()
+    {
+        
+        item = authorService.GetAuthorById(AuthorId);
+      
+    }
+}
