@@ -1,0 +1,2 @@
+# BlazorApp
+Basic Blazor Application
