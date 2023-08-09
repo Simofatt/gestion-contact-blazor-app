@@ -1,2 +1,2 @@
 # BlazorApp
-Basic Blazor Application
+Basic Blazor Application using .net
