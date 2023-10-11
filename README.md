@@ -1,2 +1,2 @@
 # BlazorApp
-Basic Blazor Application using .net learning purposes
+Basic Blazor Application using .net for learning purposes
